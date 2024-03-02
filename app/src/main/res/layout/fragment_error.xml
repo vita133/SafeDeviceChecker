@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ErrorFragment">
+
+    <TextView
+        android:id="@+id/text_view_no_enough_info"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        android:text="@string/not_enough_info"
+        android:textAppearance="@style/MyTextStyleNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_go_back"
+        style="@style/Widget.Material3.Button.IconButton.Outlined"
+        android:layout_width="166dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:gravity="center_horizontal|center_vertical|end"
+        android:paddingEnd="47dp"
+        android:text="@string/go_back"
+        android:textAlignment="inherit"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/blue"
+        app:cornerRadius="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_no_enough_info"
+        app:strokeColor="@color/blue"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="47dp"
+        android:contentDescription="@string/go_back"
+        android:src="@drawable/vector_back"
+        app:layout_constraintBottom_toBottomOf="@+id/button_go_back"
+        app:layout_constraintStart_toStartOf="@+id/button_go_back"
+        app:layout_constraintTop_toTopOf="@+id/button_go_back"
+        app:tint="@color/blue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
