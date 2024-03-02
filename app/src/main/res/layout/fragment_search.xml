@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchFragment">
+
+
+    <AutoCompleteTextView
+        android:id="@+id/editTextText_type"
+        style="@style/MyEditTextStyle"
+        android:layout_marginTop="46dp"
+        android:height="44dp"
+        android:ems="10"
+        android:fontFamily="@font/manrope_light"
+        android:inputType="text"
+        android:hint="Type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+
+        app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+
+    <AutoCompleteTextView
+        android:id="@+id/editTextText_brand"
+        style="@style/MyEditTextStyle"
+        android:layout_marginTop="25dp"
+        android:height="44dp"
+        android:ems="10"
+        android:fontFamily="@font/manrope_light"
+        android:inputType="text"
+        android:hint="Brand"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+
+        app:layout_constraintEnd_toEndOf="@+id/editTextText_type"
+        app:layout_constraintStart_toStartOf="@+id/editTextText_type"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_type" />
+
+    <AutoCompleteTextView
+        android:id="@+id/editTextText_model"
+        style="@style/MyEditTextStyle"
+        android:layout_marginTop="100dp"
+        android:height="44dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Model"
+        android:fontFamily="@font/manrope_light"
+        app:layout_constraintEnd_toEndOf="@+id/editTextText_type"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+
+        app:layout_constraintStart_toStartOf="@+id/editTextText_type"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_type" />
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="258dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/manrope_medium"
+        android:gravity="center"
+        android:text="Select a device to choose the security level"
+        android:textAppearance="@style/MyTextStyleBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_submit"
+        style="@style/MyButtonStyle_Blue"
+        android:layout_width="166dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="123dp"
+        android:fontFamily="@font/manrope"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_model" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
