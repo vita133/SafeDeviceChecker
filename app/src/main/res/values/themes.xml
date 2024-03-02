@@ -56,4 +56,19 @@
         <item name="android:paddingEnd">16dp</item>
 <!--        <item name="android:fontFamily">@font/manrope</item>-->
     </style>
+
+    <style name="MyEditTextStyle_W">
+        <item name="android:background">@drawable/rounded_corners_edittext_w</item>
+
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_width">258dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+
+        <!--        <item name="android:fontFamily">@font/manrope</item>-->
+    </style>
 </resources>

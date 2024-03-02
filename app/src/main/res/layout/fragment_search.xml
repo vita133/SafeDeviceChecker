@@ -4,23 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".SearchFragment">
 
+
+<!--    <AutoCompleteTextView-->
+<!--        android:id="@+id/editTextText_type"-->
+<!--        style="@style/MyEditTextStyle"-->
+<!--        android:layout_marginTop="46dp"-->
+<!--        android:height="44dp"-->
+<!--        android:ems="10"-->
+<!--        android:fontFamily="@font/manrope_light"-->
+<!--        android:inputType="text"-->
+<!--        android:hint="Type"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.496"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:drawableEndCompat="@drawable/ic_arrow_down"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView_title" />-->
 
     <AutoCompleteTextView
         android:id="@+id/editTextText_type"
         style="@style/MyEditTextStyle"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="44dp"
         android:height="44dp"
         android:ems="10"
         android:fontFamily="@font/manrope_light"
-        android:inputType="text"
         android:hint="Type"
+        android:inputType="text"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:drawableEndCompat="@drawable/ic_arrow_down"
-
         app:layout_constraintTop_toBottomOf="@+id/textView_title" />
 
     <AutoCompleteTextView
@@ -41,18 +56,18 @@
     <AutoCompleteTextView
         android:id="@+id/editTextText_model"
         style="@style/MyEditTextStyle"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="25dp"
         android:height="44dp"
         android:ems="10"
-        android:inputType="text"
-        android:hint="Model"
         android:fontFamily="@font/manrope_light"
-        app:layout_constraintEnd_toEndOf="@+id/editTextText_type"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:hint="Model"
+        android:inputType="text"
         app:drawableEndCompat="@drawable/ic_arrow_down"
+        app:layout_constraintEnd_toEndOf="@+id/editTextText_type"
 
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/editTextText_type"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText_type" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_brand" />
 
     <TextView
         android:id="@+id/textView_title"
@@ -83,4 +98,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText_model" />
 
+    <TextView
+        android:id="@+id/textView2_hiddenType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/white"
+        android:fontFamily="@font/manrope_light"
+        android:padding="4dp"
+        android:text="Type"
+        android:visibility="invisible"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/blue"
+        app:layout_constraintStart_toStartOf="@+id/editTextText_type"
+        app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+
+    <TextView
+        android:id="@+id/textView2_hiddenBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:fontFamily="@font/manrope_light"
+        android:padding="4dp"
+        android:text="Brand"
+        android:visibility="invisible"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/blue"
+        app:layout_constraintStart_toStartOf="@+id/editTextText_brand"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_type" />
+
+    <TextView
+        android:id="@+id/textView2_hiddenModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:fontFamily="@font/manrope_light"
+        android:padding="4dp"
+        android:text="Model"
+        android:visibility="invisible"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/blue"
+        app:layout_constraintStart_toStartOf="@+id/editTextText_model"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText_brand" />
 </androidx.constraintlayout.widget.ConstraintLayout>
