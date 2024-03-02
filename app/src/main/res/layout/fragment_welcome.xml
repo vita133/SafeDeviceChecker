@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    tools:context=".WelcomeFragment">
+
+    <ImageView
+        android:id="@+id/imageView_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toTopOf="@+id/textView_titel"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_titel"
+        android:layout_width="240dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="344dp"
+        android:gravity="center"
+        android:text="Welcome to Safe Device Checker!"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="147dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="We take care of your safety for you"
+        android:textAppearance="@style/MyTextStyle"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_titel" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

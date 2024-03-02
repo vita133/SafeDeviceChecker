@@ -14,5 +14,10 @@ class MainActivity : AppCompatActivity() {
 
         deviceDB = FirebaseDatabase.getInstance().getReference("devices")
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, WelcomeFragment())
+                .commit()
+        }
     }
 }
