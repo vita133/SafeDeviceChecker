@@ -54,55 +54,52 @@ class SearchFragment : Fragment() {
         brandAutoCompleteTextView = view.findViewById(R.id.editTextText_brand)
         modelAutoCompleteTextView = view.findViewById(R.id.editTextText_model)
 
-        val acTextViewType = view.findViewById<AutoCompleteTextView>(R.id.editTextText_type)
         val textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
-        val acTextViewBrand = view.findViewById<AutoCompleteTextView>(R.id.editTextText_brand)
         val textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
-        val acTextViewModel = view.findViewById<AutoCompleteTextView>(R.id.editTextText_model)
         val textViewModel = view.findViewById<TextView>(R.id.textView2_hiddenModel)
 
-        acTextViewType.addTextChangedListener(object : TextWatcher {
+        typeAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                acTextViewType.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                typeAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewType.visibility = View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {
-                acTextViewType.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                typeAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewType.visibility = View.VISIBLE
             }
         })
 
 
-        acTextViewBrand.addTextChangedListener(object : TextWatcher {
+        brandAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                acTextViewBrand.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                brandAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewBrand.visibility = View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {
-                acTextViewBrand.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                brandAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewBrand.visibility = View.VISIBLE
             }
         })
 
-        acTextViewModel.addTextChangedListener(object : TextWatcher {
+        modelAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                acTextViewModel.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                modelAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewModel.visibility = View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {
-                acTextViewModel.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
+                modelAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_w)
                 textViewModel.visibility = View.VISIBLE
             }
         })
@@ -114,16 +111,17 @@ class SearchFragment : Fragment() {
     }
 
     private fun fetchDeviceTypes() {
-        deviceDB.child("devices").addListenerForSingleValueEvent(object : ValueEventListener {
+        deviceDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.i(TAG, "fetchDeviceTypes: $snapshot")
                 val types = mutableListOf<String>()
                 if (snapshot.exists()) {
                     for (deviceSnapshot in snapshot.children) {
                         val deviceData = deviceSnapshot.getValue(FirebaseDevice::class.java)
                         deviceData?.deviceType?.let { types.add(it) }
                     }
+                    Log.d(TAG, types.toString())
                 }
-                Log.d(TAG, types.toString())
                 val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, types)
                 typeAutoCompleteTextView.setAdapter(typeAdapter)
             }
@@ -135,7 +133,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun fetchDeviceBrands() {
-        deviceDB.child("devices").addListenerForSingleValueEvent(object : ValueEventListener {
+        deviceDB.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val brands = mutableListOf<String>()
                 if (snapshot.exists()) {
@@ -156,7 +154,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun fetchDeviceModels() {
-        deviceDB.child("devices").addListenerForSingleValueEvent(object : ValueEventListener {
+        deviceDB.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val models = mutableListOf<String>()
                 if (snapshot.exists()) {
