@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">SafeDeviceChecker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="not_enough_info">Unfortunately, we do not have enough information about the device =(</string>
+    <string name="go_back">Go back</string>
+    <string name="welcome_logo">We take care of your safety for you</string>
+    <string name="welcome_greeting">Welcome to Safe Device Checker!</string>
+    <string name="analyzing_data_message">Analyzing data</string>
 </resources>

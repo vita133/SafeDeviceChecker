@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".LoadingFragment">
+
+    <TextView
+        android:id="@+id/text_view_analyzing_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="255dp"
+        android:gravity="center"
+        android:text="@string/analyzing_data_message"
+        android:textAppearance="@style/MyTextStyle"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ellipse1"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/ellipse_white"
+        app:layout_constraintStart_toStartOf="@+id/text_view_analyzing_data"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_analyzing_data"
+        app:tint="@color/light_blue" />
+
+    <ImageView
+        android:id="@+id/ellipse2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/ellipse_white"
+        app:layout_constraintEnd_toStartOf="@+id/ellipse3"
+        app:layout_constraintStart_toEndOf="@+id/ellipse1"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_analyzing_data"
+        app:tint="@color/light_blue" />
+
+    <ImageView
+        android:id="@+id/ellipse3"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="71dp"
+        android:src="@drawable/ellipse_white"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_analyzing_data"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_analyzing_data"
+        app:tint="@color/light_blue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
