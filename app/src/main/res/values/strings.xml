@@ -5,4 +5,9 @@
     <string name="welcome_logo">We take care of your safety for you</string>
     <string name="welcome_greeting">Welcome to Safe Device Checker!</string>
     <string name="analyzing_data_message">Analyzing data</string>
+    <string name="device_type">Type</string>
+    <string name="device_brand">Brand</string>
+    <string name="device_model">Model</string>
+    <string name="select_device_hint">Select a device to choose the security level</string>
+    <string name="button_submit">Submit</string>
 </resources>

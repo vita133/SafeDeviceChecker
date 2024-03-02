@@ -2,6 +2,8 @@ package com.example.safedevicechecker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -18,6 +20,11 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, SearchFragment())
                 .commit()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, SearchFragment())
+                    .commit() }, 3000)
         }
     }
 }
