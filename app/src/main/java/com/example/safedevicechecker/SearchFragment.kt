@@ -31,6 +31,9 @@ class SearchFragment : Fragment() {
     private lateinit var brandAutoCompleteTextView: AutoCompleteTextView
     private lateinit var modelAutoCompleteTextView: AutoCompleteTextView
     private lateinit var buttonSubmit: Button
+    private lateinit var textViewType: TextView
+    private lateinit var textViewBrand: TextView
+    private lateinit var textViewModel: TextView
 
     private lateinit var deviceDB: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +59,9 @@ class SearchFragment : Fragment() {
         modelAutoCompleteTextView = view.findViewById(R.id.editTextText_model)
         buttonSubmit = view.findViewById(R.id.button_submit)
 
-        val textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
-        val textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
-        val textViewModel = view.findViewById<TextView>(R.id.textView2_hiddenModel)
+        textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
+        textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
+        textViewModel = view.findViewById<TextView>(R.id.textView2_hiddenModel)
 
         typeAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -215,7 +218,12 @@ class SearchFragment : Fragment() {
                             ?.commit()
                     }
                 } else {
-                    //Отут те, що робиться, коли в бд немає
+                    typeAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_r)
+                    textViewType.setTextColor(resources.getColor(R.color.red))
+                    brandAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_r)
+                    textViewBrand.setTextColor(resources.getColor(R.color.red))
+                    modelAutoCompleteTextView.setBackgroundResource(R.drawable.rounded_corners_edittext_r)
+                    textViewModel.setTextColor(resources.getColor(R.color.red))
                 }
             }
 
