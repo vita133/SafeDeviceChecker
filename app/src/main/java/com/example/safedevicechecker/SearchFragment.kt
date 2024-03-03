@@ -20,12 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class SearchFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var typeAutoCompleteTextView: AutoCompleteTextView
     private lateinit var brandAutoCompleteTextView: AutoCompleteTextView
@@ -38,12 +33,6 @@ class SearchFragment : Fragment() {
     private lateinit var deviceDB: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-
     }
 
     override fun onCreateView(
@@ -198,7 +187,7 @@ class SearchFragment : Fragment() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var  key: String? = null
-                val deviceData = snapshot.children.firstOrNull { key = it.key;
+                val deviceData = snapshot.children.firstOrNull { key = it.key
                     it.child("deviceBrand").value == selectedBrand && it.child("deviceType").value == selectedType }?.getValue(FirebaseDevice::class.java)
                 if (deviceData != null) {
                     if (deviceData.deviceIsSecure == true) {

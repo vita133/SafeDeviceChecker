@@ -1,7 +1,5 @@
 package com.example.safedevicechecker
 
-import android.content.Intent
-import android.net.Uri
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.SpannableString
@@ -12,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.DialogFragment
 import com.example.safedevicechecker.data.FirebaseDevice
 import com.google.firebase.database.DataSnapshot
@@ -22,22 +20,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class NotSecureFragment(private val deviceKey: String?) : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var buttonReadMore: Button
     private var deviceData: FirebaseDevice? = null
+    private lateinit var imageViewBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -75,13 +65,15 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
             Log.w("SuccessFragment", "Missing device key in arguments")
         }
 
-        val imageViewBack = view?.findViewById<TextView>(R.id.imageView_back2)
-        imageViewBack?.setOnClickListener {
-            val action = NotSecureFragmentDirections.actionNotSecureFragmentToSearchFragment()
-            findNavController().navigate(action)
+        imageViewBack = view.findViewById(R.id.imageView_back2) ?: ImageView(context)
+
+        imageViewBack.setOnClickListener {
+            val searchFragment = SearchFragment()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.container, searchFragment)
+                ?.commit()
         }
 
-        return inflater.inflate(R.layout.fragment_not_secure, container, false)
         setOnButtonClickListener(view)
         return view
     }
@@ -96,8 +88,6 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
             }
         }
     }
-
-
 
     private fun displayInfo(device: FirebaseDevice) {
         val deviceType = view?.findViewById<TextView>(R.id.textView_typeInfo)
@@ -114,11 +104,25 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
         deviceBrand?.text = device.deviceBrand
         deviceModel?.text = device.deviceModel
         deviceWiFi?.text = device.wiFi.toString()
-        deviceSupport?.text = device.twoFourGHz.toString() + " / " + device.fiveGHz.toString()
+        deviceWiFi?.text = if (device.wiFi == true) "Supported" else if (device.wiFi == false) "Not Supported" else "N/A"
+
+        val wifiSupportText = StringBuilder()
+        if (device.twoFourGHz == true) {
+            wifiSupportText.append("2.4GHz")
+        }
+        if (device.fiveGHz == true) {
+            if (wifiSupportText.isNotEmpty()) {
+                wifiSupportText.append(", ")
+            }
+            wifiSupportText.append("5GHz")
+        }
+        deviceSupport?.text = if (wifiSupportText.isEmpty()) "Not Supported" else wifiSupportText.toString()
         deviceEncryption?.text = device.encryption ?: "N/A"
         deviceSecurityProtocol?.text = device.securityProtocol ?: "N/A"
-        devicePrivacyShutter?.text = device.privacyShutter.toString() ?: "N/A"
-        deviceVideo?.text = device.video.toString() ?: "N/A"
+        devicePrivacyShutter?.text = if (device.privacyShutter == true) "Supported" else
+            if (device.privacyShutter == false) "Not Supported" else "N/A"
+        deviceVideo?.text = if (device.video == true) "Supported" else
+            if (device.video == false) "Not Supported" else "N/A"
     }
 
     class CommentDialogFragment(private val comment: String?) : DialogFragment() {
