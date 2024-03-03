@@ -26,14 +26,13 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     private lateinit var typeAutoCompleteTextView: AutoCompleteTextView
     private lateinit var brandAutoCompleteTextView: AutoCompleteTextView
     private lateinit var modelAutoCompleteTextView: AutoCompleteTextView
-    private lateinit var searchButton: Button
+    private lateinit var buttonSubmit: Button
 
     private lateinit var deviceDB: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +56,7 @@ class SearchFragment : Fragment() {
         typeAutoCompleteTextView = view.findViewById(R.id.editTextText_type)
         brandAutoCompleteTextView = view.findViewById(R.id.editTextText_brand)
         modelAutoCompleteTextView = view.findViewById(R.id.editTextText_model)
-        searchButton = view.findViewById(R.id.button_submit)
-
+        buttonSubmit = view.findViewById(R.id.button_submit)
 
         val textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
         val textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
@@ -123,7 +121,11 @@ class SearchFragment : Fragment() {
                 val uniqueTypes = snapshot.children.mapNotNull {
                     it.getValue(FirebaseDevice::class.java)?.deviceType
                 }.toSet()
-                val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueTypes.toList())
+                val typeAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    uniqueTypes.toList()
+                )
                 typeAutoCompleteTextView.setAdapter(typeAdapter)
             }
 
@@ -139,8 +141,12 @@ class SearchFragment : Fragment() {
                 val uniqueBrands = snapshot.children.mapNotNull {
                     it.getValue(FirebaseDevice::class.java)?.deviceBrand
                 }.toSet()
-                val brandAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueBrands.toList())
-                typeAutoCompleteTextView.setAdapter(brandAdapter)
+                val brandAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    uniqueBrands.toList()
+                )
+                brandAutoCompleteTextView.setAdapter(brandAdapter)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -155,8 +161,12 @@ class SearchFragment : Fragment() {
                 val uniqueModels = snapshot.children.mapNotNull {
                     it.getValue(FirebaseDevice::class.java)?.deviceModel
                 }.toSet()
-                val modelAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueModels.toList())
-                typeAutoCompleteTextView.setAdapter(modelAdapter)
+                val modelAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    uniqueModels.toList()
+                )
+                modelAutoCompleteTextView.setAdapter(modelAdapter)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -166,11 +176,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun setOnButtonClickListener(view: View) {
-        searchButton.setOnClickListener {
-            val type = typeAutoCompleteTextView.text.toString()
-            val brand = brandAutoCompleteTextView.text.toString()
-            val model = modelAutoCompleteTextView.text.toString()
-            //get device info from firebase
+        buttonSubmit.setOnClickListener {
+                searchDevice()
 
 //            val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(twoFourGHz = true, fiveGHz = true, comments = "comments", deviceBrand = "deviceBrand", deviceInfoLink = "deviceInfoLink", deviceIsSecure = true, deviceModel = "deviceModel", deviceType = "deviceType", encryption = "encryption", privacyShutter = true, securityProtocol = "securityProtocol", video = true, wiFi = true)
 //            findNavController().navigate(action)
@@ -181,5 +188,43 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val TAG = "SearchFragment"
+    }
+
+    private fun searchDevice() {
+        val selectedType = typeAutoCompleteTextView.text.toString().trim()
+        val selectedBrand = brandAutoCompleteTextView.text.toString().trim()
+        val selectedModel = modelAutoCompleteTextView.text.toString().trim()
+
+//        val query = deviceDB.orderByChild("deviceModel").equalTo(selectedModel)
+//            .orderByChild("deviceBrand").equalTo(selectedBrand)
+//            .orderByChild("deviceModel").equalTo(selectedModel)
+//        Log.d("111Error searching ", "$query")
+        val query = deviceDB.orderByChild("deviceModel").equalTo(selectedModel)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val deviceData = snapshot.children.firstOrNull { it.child("deviceBrand").value == selectedBrand && it.child("deviceType").value == selectedType }?.getValue(FirebaseDevice::class.java)
+                Log.d("1111111", "$deviceData")
+                if (deviceData != null) {
+                    if (deviceData.deviceIsSecure == true) {
+                       // val successFragment = SuccessFragment()
+                        val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(twoFourGHz = deviceData.twoFourGHz, fiveGHz = deviceData.fiveGHz, comments = deviceData.comments, deviceBrand = deviceData.deviceBrand, deviceInfoLink = deviceData.deviceInfoLink, deviceModel = deviceData.deviceModel, deviceType = deviceData.deviceType, encryption = deviceData.encryption, privacyShutter = deviceData.privacyShutter, securityProtocol = deviceData.securityProtocol, video = deviceData.video, wiFi = deviceData.wiFi)
+                        findNavController().navigate(action)
+//                        activity?.supportFragmentManager?.beginTransaction()
+//                            ?.replace(R.id.container, successFragment) // Замість add(), використовуйте replace()
+//                            ?.commit()
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Обробка помилки
+                Log.e(TAG, "Error searching device: ${error.message}")
+            }
+        })
     }
 }
