@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.safedevicechecker.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.safedevicechecker.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_successFragment"
+            app:destination="@id/successFragment" >
+        <argument
+            android:name="device"
+            app:argType="com.example.safedevicechecker.data.FirebaseDevice" />
+        </action>
+
+        <action
+            android:id="@+id/action_searchFragment_to_errorFragment"
+            app:destination="@id/errorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.example.safedevicechecker.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" />
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.example.safedevicechecker.SuccessFragment"
+        android:label="fragment_success"
+        tools:layout="@layout/fragment_success" />
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.example.safedevicechecker.ErrorFragment"
+        android:label="fragment_error"
+        tools:layout="@layout/fragment_error" />
+</navigation>

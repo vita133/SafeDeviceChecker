@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.safedevicechecker.data.FirebaseDevice
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,6 +33,7 @@ class SearchFragment : Fragment() {
     private lateinit var typeAutoCompleteTextView: AutoCompleteTextView
     private lateinit var brandAutoCompleteTextView: AutoCompleteTextView
     private lateinit var modelAutoCompleteTextView: AutoCompleteTextView
+    private lateinit var searchButton: Button
 
     private lateinit var deviceDB: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +61,7 @@ class SearchFragment : Fragment() {
         val textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
         val textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
         val textViewModel = view.findViewById<TextView>(R.id.textView2_hiddenModel)
+        val searchButton = view.findViewById<View>(R.id.button_submit)
 
         typeAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -107,6 +112,7 @@ class SearchFragment : Fragment() {
         fetchDeviceTypes()
         fetchDeviceBrands()
         fetchDeviceModels()
+        setOnButtonClickListener(view)
         return view
     }
 
@@ -157,6 +163,20 @@ class SearchFragment : Fragment() {
             }
         })
     }
+
+    private fun setOnButtonClickListener(view: View) {
+        searchButton.setOnClickListener {
+            val type = typeAutoCompleteTextView.text.toString()
+            val brand = brandAutoCompleteTextView.text.toString()
+            val model = modelAutoCompleteTextView.text.toString()
+
+            val device = FirebaseDevice(deviceType = type, deviceBrand = brand, deviceModel = model, video = false, wiFi = false, twoFourGHz = false, fiveGHz = false, securityProtocol = null, privacyShutter = false, encryption = null, deviceIsSecure = null, deviceInfoLink = null, comments = null)
+            val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(device)
+            findNavController().navigate(action)
+        }
+    }
+
+
 
     companion object {
         private const val TAG = "SearchFragment"
