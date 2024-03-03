@@ -113,16 +113,10 @@ class SearchFragment : Fragment() {
     private fun fetchDeviceTypes() {
         deviceDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.i(TAG, "fetchDeviceTypes: $snapshot")
-                val types = mutableListOf<String>()
-                if (snapshot.exists()) {
-                    for (deviceSnapshot in snapshot.children) {
-                        val deviceData = deviceSnapshot.getValue(FirebaseDevice::class.java)
-                        deviceData?.deviceType?.let { types.add(it) }
-                    }
-                    Log.d(TAG, types.toString())
-                }
-                val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, types)
+                val uniqueTypes = snapshot.children.mapNotNull {
+                    it.getValue(FirebaseDevice::class.java)?.deviceType
+                }.toSet()
+                val typeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueTypes.toList())
                 typeAutoCompleteTextView.setAdapter(typeAdapter)
             }
 
@@ -135,16 +129,11 @@ class SearchFragment : Fragment() {
     private fun fetchDeviceBrands() {
         deviceDB.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val brands = mutableListOf<String>()
-                if (snapshot.exists()) {
-                    for (deviceSnapshot in snapshot.children) {
-                        val deviceData = deviceSnapshot.getValue(FirebaseDevice::class.java)
-                        deviceData?.deviceBrand?.let { brands.add(it) }
-                    }
-                }
-
-                val brandAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, brands)
-                brandAutoCompleteTextView.setAdapter(brandAdapter)
+                val uniqueBrands = snapshot.children.mapNotNull {
+                    it.getValue(FirebaseDevice::class.java)?.deviceBrand
+                }.toSet()
+                val brandAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueBrands.toList())
+                typeAutoCompleteTextView.setAdapter(brandAdapter)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -156,16 +145,11 @@ class SearchFragment : Fragment() {
     private fun fetchDeviceModels() {
         deviceDB.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val models = mutableListOf<String>()
-                if (snapshot.exists()) {
-                    for (deviceSnapshot in snapshot.children) {
-                        val deviceData = deviceSnapshot.getValue(FirebaseDevice::class.java)
-                        deviceData?.deviceModel?.let { models.add(it) }
-                    }
-                }
-
-                val modelAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, models)
-                modelAutoCompleteTextView.setAdapter(modelAdapter)
+                val uniqueModels = snapshot.children.mapNotNull {
+                    it.getValue(FirebaseDevice::class.java)?.deviceModel
+                }.toSet()
+                val modelAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, uniqueModels.toList())
+                typeAutoCompleteTextView.setAdapter(modelAdapter)
             }
 
             override fun onCancelled(error: DatabaseError) {
