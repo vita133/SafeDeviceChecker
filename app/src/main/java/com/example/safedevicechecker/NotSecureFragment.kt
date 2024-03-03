@@ -2,14 +2,19 @@ package com.example.safedevicechecker
 
 import android.content.Intent
 import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.util.Linkify
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.DialogFragment
 import com.example.safedevicechecker.data.FirebaseDevice
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,6 +29,9 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var buttonReadMore: Button
+    private var deviceData: FirebaseDevice? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +44,10 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_not_secure, container, false)
+
+        buttonReadMore = view.findViewById(R.id.button_readMore)
+
         if (deviceKey != null) {
             val database = FirebaseDatabase.getInstance().getReference("devices/$deviceKey")
 
@@ -43,15 +55,15 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("dvdvdv", "$snapshot")
                     if (snapshot.exists()) {
-                        val deviceData = snapshot.getValue(FirebaseDevice::class.java)
+                        deviceData = snapshot.getValue(FirebaseDevice::class.java)
 
-                        if (deviceData != null) {
-                            displayInfo(deviceData)
-                        } else {
-                            Log.w("SuccessFragment", "Device data not found for key: $deviceKey")
-                        }
+                        deviceData?.let { displayInfo(it) }
+                            ?: Log.w("SuccessFragment", "Device data not found for key: $deviceKey")
                     } else {
-                        Log.w("SuccessFragment", "No device data found in database for key: $deviceKey")
+                        Log.w(
+                            "SuccessFragment",
+                            "No device data found in database for key: $deviceKey"
+                        )
                     }
                 }
 
@@ -70,6 +82,19 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
         }
 
         return inflater.inflate(R.layout.fragment_not_secure, container, false)
+        setOnButtonClickListener(view)
+        return view
+    }
+
+    private fun setOnButtonClickListener(view: View?) {
+        buttonReadMore.setOnClickListener {
+            if (deviceData != null) {
+                val comment = deviceData!!.comments
+                val dialogFragment = CommentDialogFragment(comment)
+                dialogFragment.show(childFragmentManager, "commentDialog")
+
+            }
+        }
     }
 
 
@@ -95,4 +120,34 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
         devicePrivacyShutter?.text = device.privacyShutter.toString() ?: "N/A"
         deviceVideo?.text = device.video.toString() ?: "N/A"
     }
+
+    class CommentDialogFragment(private val comment: String?) : DialogFragment() {
+
+        @SuppressLint("MissingInflatedId")
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val view = inflater.inflate(R.layout.fragment_comment_dialog, container, false)
+
+            val textViewComment =
+                view.findViewById<TextView>(R.id.text_view_comment) // Припустимо, що ваш макет містить TextView з цим ідентифікатором
+
+            if (comment != null) {
+                textViewComment.text = makeCommentClickable(comment)
+            } else {
+                textViewComment.text = "No comment available."
+            }
+
+            return view
+        }
+
+        fun makeCommentClickable(comment: String): SpannableString {
+            val spannableString = SpannableString(comment)
+            Linkify.addLinks(spannableString, Linkify.WEB_URLS)
+            return spannableString
+        }
+    }
 }
+
