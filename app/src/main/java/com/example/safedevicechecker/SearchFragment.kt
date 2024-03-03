@@ -57,11 +57,12 @@ class SearchFragment : Fragment() {
         typeAutoCompleteTextView = view.findViewById(R.id.editTextText_type)
         brandAutoCompleteTextView = view.findViewById(R.id.editTextText_brand)
         modelAutoCompleteTextView = view.findViewById(R.id.editTextText_model)
+        searchButton = view.findViewById(R.id.button_submit)
+
 
         val textViewType = view.findViewById<TextView>(R.id.textView2_hiddenType)
         val textViewBrand = view.findViewById<TextView>(R.id.textView2_hiddenBrand)
         val textViewModel = view.findViewById<TextView>(R.id.textView2_hiddenModel)
-        val searchButton = view.findViewById<View>(R.id.button_submit)
 
         typeAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -169,10 +170,10 @@ class SearchFragment : Fragment() {
             val type = typeAutoCompleteTextView.text.toString()
             val brand = brandAutoCompleteTextView.text.toString()
             val model = modelAutoCompleteTextView.text.toString()
+            //get device info from firebase
 
-            val device = FirebaseDevice(deviceType = type, deviceBrand = brand, deviceModel = model, video = false, wiFi = false, twoFourGHz = false, fiveGHz = false, securityProtocol = null, privacyShutter = false, encryption = null, deviceIsSecure = null, deviceInfoLink = null, comments = null)
-            val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(device)
-            findNavController().navigate(action)
+//            val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(twoFourGHz = true, fiveGHz = true, comments = "comments", deviceBrand = "deviceBrand", deviceInfoLink = "deviceInfoLink", deviceIsSecure = true, deviceModel = "deviceModel", deviceType = "deviceType", encryption = "encryption", privacyShutter = true, securityProtocol = "securityProtocol", video = true, wiFi = true)
+//            findNavController().navigate(action)
         }
     }
 
