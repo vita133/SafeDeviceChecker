@@ -1,6 +1,11 @@
 package com.example.safedevicechecker
 
+import android.content.Intent
+import android.net.Uri
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.util.Linkify
@@ -80,11 +85,11 @@ class NotSecureFragment(private val deviceKey: String?) : Fragment() {
 
     private fun setOnButtonClickListener(view: View?) {
         buttonReadMore.setOnClickListener {
+
             if (deviceData != null) {
                 val comment = deviceData!!.comments
                 val dialogFragment = CommentDialogFragment(comment)
                 dialogFragment.show(childFragmentManager, "commentDialog")
-
             }
         }
     }
