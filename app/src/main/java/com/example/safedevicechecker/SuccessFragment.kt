@@ -1,18 +1,22 @@
 package com.example.safedevicechecker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.safedevicechecker.data.FirebaseDevice
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class SuccessFragment : Fragment() {
+class SuccessFragment(private val deviceKey: String? ): Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -28,35 +32,37 @@ class SuccessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (deviceKey != null) {
+            val database = FirebaseDatabase.getInstance().getReference("devices/$deviceKey")
 
-        val arguments = arguments
-        //get all arguments
-        if (arguments != null) {
-            val device = FirebaseDevice(
-                arguments.getBoolean("twoFourGHz"),
-                arguments.getBoolean("fiveGHz"),
-                arguments.getString("comments"),
-                arguments.getString("deviceBrand"),
-                arguments.getString("deviceInfoLink"),
-                arguments.getBoolean("deviceIsSecure"),
-                arguments.getString("deviceModel"),
-                arguments.getString("deviceType"),
-                arguments.getString("encryption"),
-                arguments.getBoolean("privacyShutter"),
-                arguments.getString("securityProtocol"),
-                arguments.getBoolean("video"),
-                arguments.getBoolean("wiFi")
-            )
-            displayInfo(device)
+            database.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("dvdvdv", "$snapshot")
+                    if (snapshot.exists()) {
+                        val deviceData = snapshot.getValue(FirebaseDevice::class.java)
+
+                        if (deviceData != null) {
+                            displayInfo(deviceData)
+                        } else {
+                            Log.w("SuccessFragment", "Device data not found for key: $deviceKey")
+                        }
+                    } else {
+                        Log.w("SuccessFragment", "No device data found in database for key: $deviceKey")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w("SuccessFragment", "Failed to read device data: $error")
+                }
+            })
+        } else {
+            Log.w("SuccessFragment", "Missing device key in arguments")
         }
 
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_success, container, false)
     }
 
     private fun displayInfo(device: FirebaseDevice) {
-        //display the device information
         val deviceType = view?.findViewById<TextView>(R.id.textView_typeInfo)
         val deviceBrand = view?.findViewById<TextView>(R.id.textView_brandInfo)
         val deviceModel = view?.findViewById<TextView>(R.id.textView_modelInfo)
@@ -77,6 +83,4 @@ class SuccessFragment : Fragment() {
         devicePrivacyShutter?.text = device.privacyShutter.toString()
         deviceVideo?.text = device.video.toString()
     }
-
-
 }

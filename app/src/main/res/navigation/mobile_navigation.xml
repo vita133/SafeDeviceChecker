@@ -25,45 +25,6 @@
         <action
             android:id="@+id/action_searchFragment_to_successFragment"
             app:destination="@id/successFragment" >
-            <argument
-                android:name="twoFourGHz"
-                app:argType="Boolean" />
-            <argument
-                android:name="fiveGHz"
-                app:argType="Boolean" />
-            <argument
-                android:name="comments"
-                app:argType="String" />
-            <argument
-                android:name="deviceBrand"
-                app:argType="String" />
-            <argument
-                android:name="deviceInfoLink"
-                app:argType="String" />
-            <argument
-                android:name="deviceIsSecure"
-                app:argType="Boolean" />
-            <argument
-                android:name="deviceModel"
-                app:argType="String" />
-            <argument
-                android:name="deviceType"
-                app:argType="String" />
-            <argument
-                android:name="encryption"
-                app:argType="String" />
-            <argument
-                android:name="privacyShutter"
-                app:argType="Boolean" />
-            <argument
-                android:name="securityProtocol"
-                app:argType="String" />
-            <argument
-                android:name="video"
-                app:argType="Boolean" />
-            <argument
-                android:name="wiFi"
-                app:argType="Boolean" />
         </action>
 
         <action

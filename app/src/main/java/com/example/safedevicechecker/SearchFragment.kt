@@ -12,8 +12,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.safedevicechecker.data.FirebaseDevice
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -178,9 +176,6 @@ class SearchFragment : Fragment() {
     private fun setOnButtonClickListener(view: View) {
         buttonSubmit.setOnClickListener {
                 searchDevice()
-
-//            val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(twoFourGHz = true, fiveGHz = true, comments = "comments", deviceBrand = "deviceBrand", deviceInfoLink = "deviceInfoLink", deviceIsSecure = true, deviceModel = "deviceModel", deviceType = "deviceType", encryption = "encryption", privacyShutter = true, securityProtocol = "securityProtocol", video = true, wiFi = true)
-//            findNavController().navigate(action)
         }
     }
 
@@ -195,34 +190,36 @@ class SearchFragment : Fragment() {
         val selectedBrand = brandAutoCompleteTextView.text.toString().trim()
         val selectedModel = modelAutoCompleteTextView.text.toString().trim()
 
-//        val query = deviceDB.orderByChild("deviceModel").equalTo(selectedModel)
-//            .orderByChild("deviceBrand").equalTo(selectedBrand)
-//            .orderByChild("deviceModel").equalTo(selectedModel)
-//        Log.d("111Error searching ", "$query")
         val query = deviceDB.orderByChild("deviceModel").equalTo(selectedModel)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val deviceData = snapshot.children.firstOrNull { it.child("deviceBrand").value == selectedBrand && it.child("deviceType").value == selectedType }?.getValue(FirebaseDevice::class.java)
-                Log.d("1111111", "$deviceData")
+                var  key: String? = null
+                val deviceData = snapshot.children.firstOrNull { key = it.key;
+                    it.child("deviceBrand").value == selectedBrand && it.child("deviceType").value == selectedType }?.getValue(FirebaseDevice::class.java)
                 if (deviceData != null) {
                     if (deviceData.deviceIsSecure == true) {
-                       // val successFragment = SuccessFragment()
-                        val action = SearchFragmentDirections.actionSearchFragmentToSuccessFragment(twoFourGHz = deviceData.twoFourGHz, fiveGHz = deviceData.fiveGHz, comments = deviceData.comments, deviceBrand = deviceData.deviceBrand, deviceInfoLink = deviceData.deviceInfoLink, deviceModel = deviceData.deviceModel, deviceType = deviceData.deviceType, encryption = deviceData.encryption, privacyShutter = deviceData.privacyShutter, securityProtocol = deviceData.securityProtocol, video = deviceData.video, wiFi = deviceData.wiFi)
-                        findNavController().navigate(action)
-//                        activity?.supportFragmentManager?.beginTransaction()
-//                            ?.replace(R.id.container, successFragment) // Замість add(), використовуйте replace()
-//                            ?.commit()
+                        val successFragment = SuccessFragment(key)
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.container, successFragment)
+                            ?.commit()
+                    } else  if (deviceData.deviceIsSecure == false){
+                        val notSecureFragment = NotSecureFragment(key)
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.container, notSecureFragment)
+                            ?.commit()
                     } else {
-
+                        val errorFragment = ErrorFragment()
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.container, errorFragment)
+                            ?.commit()
                     }
                 } else {
-
+                    //Отут те, що робиться, коли в бд немає
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Обробка помилки
                 Log.e(TAG, "Error searching device: ${error.message}")
             }
         })
